@@ -1,0 +1,6 @@
+.navbar-logo h1{
+    background: linear-gradient(90deg, #8eff6b, #7a65f0, #a5d4d4);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 2rem;
+}
