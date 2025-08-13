@@ -27,7 +27,7 @@ await connectDB();
 
 app.use(express.json());
 app.use(cors({
-    origin: "http://localhost:5173", // frontend URL changed to production
+    origin: "http://localhost:4173", // frontend URL changed to production
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
@@ -41,7 +41,7 @@ app.use('/api/details', studentRouter)
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
     cors: {
-        origin: "http://localhost:5173" // frontend URL changed to production
+        origin: "http://localhost:4173" // frontend URL changed to production
     }
 });
 
