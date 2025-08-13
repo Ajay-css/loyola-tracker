@@ -83,7 +83,7 @@ const StudentTable = () => {
 
     const handleLogout = async () => {
         try {
-            await axios.post('http://localhost:3000/api/auth/logout');
+            await axios.post('https://loyola-tracker-backend.onrender.com/api/auth/logout');
             toast.success("Logged out successfully");
             navigate('/');
         } catch (error) {
