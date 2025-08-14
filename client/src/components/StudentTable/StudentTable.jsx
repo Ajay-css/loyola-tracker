@@ -8,7 +8,11 @@ import axios from 'axios';
 
 const StudentTable = () => {
     const [students, setStudents] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
     const navigate = useNavigate();
+    const filteredStudents = students.filter(student =>
+        student.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     const fetchStudents = async () => {
         try {
@@ -95,10 +99,20 @@ const StudentTable = () => {
     return (
         <>
 
-           <div style={styles.nav}>
+            <div style={styles.nav}>
                 <h1 style={{ textAlign: 'center', margin: '20px 0' }}>Students List</h1>
-                <button style={styles.logout} onClick={handleLogout}><LogOut size={20}/>Logout</button>
-           </div>
+                <button style={styles.logout} onClick={handleLogout}><LogOut size={20} />Logout</button>
+            </div>
+
+            <div style={styles.searchContainer}>
+                <input
+                    type="text"
+                    placeholder="Search by student name..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    style={styles.searchInput}
+                />
+            </div>
 
             <div style={styles.tcontainer}>
                 <div style={styles.tableWrapper}>
@@ -115,30 +129,38 @@ const StudentTable = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {students.map((student) => (
-                                <tr key={student._id}>
-                                    <td style={styles.tdata}>{student.name}</td>
-                                    <td style={styles.tdata}>{student.std}</td>
-                                    <td style={styles.tdata}>{student.section}</td>
-                                    <td style={styles.tdata}>{student.subStatus}</td>
-                                    <td style={styles.tdata}>{student.attendance}</td>
-                                    <td style={styles.tdata}>{student.feesPaid ? "Yes" : "No"}</td>
-                                    <td>
-                                        <button
-                                            onClick={() => navigateToEdit(student._id)}
-                                            style={styles.editBtn}
-                                        >
-                                            Edit
-                                        </button>
-                                        <button
-                                            onClick={() => handleDelete(student._id)}
-                                            style={styles.delBtn}
-                                        >
-                                            Delete
-                                        </button>
+                            {filteredStudents.length === 0 ? (
+                                <tr>
+                                    <td colSpan="7" style={{ textAlign: 'center', padding: '20px', color: '#888' }}>
+                                        No students found matching your search.
                                     </td>
                                 </tr>
-                            ))}
+                            ) : (
+                                filteredStudents.map((student) => (
+                                    <tr key={student._id}>
+                                        <td style={styles.tdata}>{student.name}</td>
+                                        <td style={styles.tdata}>{student.std}</td>
+                                        <td style={styles.tdata}>{student.section}</td>
+                                        <td style={styles.tdata}>{student.subStatus}</td>
+                                        <td style={styles.tdata}>{student.attendance}</td>
+                                        <td style={styles.tdata}>{student.feesPaid ? "Yes" : "No"}</td>
+                                        <td>
+                                            <button
+                                                onClick={() => navigateToEdit(student._id)}
+                                                style={styles.editBtn}
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(student._id)}
+                                                style={styles.delBtn}
+                                            >
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 </div>
@@ -298,7 +320,7 @@ const styles = {
         }
     },
     nav: {
-        position: 'relative',   
+        position: 'relative',
         width: '100%',
         padding: '10px',
         display: 'flex',
