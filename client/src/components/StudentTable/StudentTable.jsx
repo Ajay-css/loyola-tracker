@@ -95,8 +95,10 @@ const StudentTable = () => {
     return (
         <>
 
-            <h1 style={{ textAlign: 'center', margin: '20px 0' }}>Students List</h1>
-            <button style={styles.logout} onClick={handleLogout}><LogOut size={20}/>Logout</button>
+           <div style={styles.nav}>
+                <h1 style={{ textAlign: 'center', margin: '20px 0' }}>Students List</h1>
+                <button style={styles.logout} onClick={handleLogout}><LogOut size={20}/>Logout</button>
+           </div>
 
             <div style={styles.tcontainer}>
                 <div style={styles.tableWrapper}>
@@ -293,6 +295,20 @@ const styles = {
             width: '100%',
             position: 'static',
             marginTop: '10px'
+        }
+    },
+    nav: {
+        position: 'relative',   
+        width: '100%',
+        padding: '10px',
+        backgroundColor: '#f2f2f2',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        '@media (max-width: 600px)': {
+            flexDirection: 'column',
+            alignItems: 'flex-start',
         }
     }
 }
