@@ -301,8 +301,6 @@ const styles = {
         position: 'relative',   
         width: '100%',
         padding: '10px',
-        backgroundColor: '#f2f2f2',
-        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
