@@ -57,7 +57,7 @@ const StudentTable = () => {
     const handleExcel = async () => {
         try {
             // Make GET request with responseType blob
-            const response = await api.get("/data", `${attendanceFilter ? `?attendance=${attendanceFilter}` : ''}`,
+            const response = await api.get(`/data${attendanceFilter ? `?attendance=${attendanceFilter}` : ''}`,
                 { responseType: 'blob' }
             );
 
