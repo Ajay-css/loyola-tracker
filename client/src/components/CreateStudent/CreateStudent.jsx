@@ -47,6 +47,7 @@ const CreateStudent = () => {
                 feesPaid
             });
             console.log(`Student Created Successfully`)
+            toast.success("Student Added Successfully");
             fetchStudents();
             resetForm();
             navigate('/dashboard')
