@@ -18,14 +18,14 @@ const EditStudent = () => {
     useEffect(() => {
         const fetchStudent = async () => {
             try {
-                const response = await api.get(`/students`);
+                const response = await api.get(`/students/${id}`);
                 const student = response.data;
-                setName(student.name);
-                setStd(student.std);
-                setSection(student.section);
-                setSubStatus(student.subStatus);
-                setAttendance(student.attendance);
-                setFeesPaid(student.feesPaid);
+                setName(student.name || "");
+                setStd(student.std || "");
+                setSection(student.section || "");
+                setSubStatus(student.subStatus || "");
+                setAttendance(student.attendance || "");
+                setFeesPaid(!!student.feesPaid); // ensure boolean
             } catch (error) {
                 console.error("Error fetching student:", error);
                 toast.error("Failed to fetch student data");
