@@ -34,17 +34,16 @@ export const addStudent = async (req, res) => {
 
 export const exportToExcel = async (req, res) => {
     try {
-        // Get attendance filter from query params
-        const { attendance } = req.query;
-        let filter = {};
-        if (attendance) {
-            filter.attendance = attendance;
-        }
-
-        const students = await Student.find(filter);
+        const students = await Student.find();
         if (students.length === 0) {
             return res.status(404).json({ message: "No Students Found!" });
         }
+
+        // Sort students: Present first, then Absent
+        const sortedStudents = students.sort((a, b) => {
+            if (a.attendance === b.attendance) return 0;
+            return a.attendance === "Present" ? -1 : 1;
+        });
 
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet("Students");
@@ -58,7 +57,7 @@ export const exportToExcel = async (req, res) => {
             { header: "Fees Info", key: "feesPaid", width: 15 }
         ];
 
-        students.forEach(student => {
+        sortedStudents.forEach(student => {
             worksheet.addRow({
                 name: student.name,
                 std: student.std,
@@ -69,6 +68,7 @@ export const exportToExcel = async (req, res) => {
             });
         });
 
+        // Create uploads directory if it doesn't exist
         const uploadsDir = path.join(__dirname, '../uploads');
         if (!fs.existsSync(uploadsDir)) {
             fs.mkdirSync(uploadsDir);
