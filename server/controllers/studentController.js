@@ -34,16 +34,16 @@ export const addStudent = async (req, res) => {
 
 export const exportToExcel = async (req, res) => {
     try {
-        // Get attendance filter from query params
-        const { attendance } = req.query;
+        // Normalize attendance filter to lowercase
+        const attendance = req.query.attendance ? req.query.attendance.toLowerCase() : undefined;
         let students;
         let sheetName = "Students";
 
-        if (attendance === "Absent") {
-            students = await Student.find({ attendance: "Absent" });
+        if (attendance === "absent") {
+            students = await Student.find({ attendance: "absent" });
             sheetName = "Absent Students";
-        } else if (attendance === "Present") {
-            students = await Student.find({ attendance: "Present" });
+        } else if (attendance === "present") {
+            students = await Student.find({ attendance: "present" });
             sheetName = "Present Students";
         } else {
             students = await Student.find();

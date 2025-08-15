@@ -185,6 +185,10 @@ const StudentTable = () => {
                         <FileSpreadsheet />
                         <span style={styles.buttonText}>Download Absentees</span>
                     </button>
+                    <button style={styles.excel} onClick={() => handleExcel("Present")}>
+                        <FileSpreadsheet />
+                        <span style={styles.buttonText}>Download Present Students</span>
+                    </button>
                     <button style={styles.newStudent} onClick={navigateToCreate}>
                         <Plus />
                         <span style={styles.buttonText}>Add Student</span>
