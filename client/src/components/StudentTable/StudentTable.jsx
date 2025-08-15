@@ -330,6 +330,19 @@ const styles = {
             flexDirection: 'column',
             alignItems: 'flex-start',
         }
+    },
+    searchInput : {
+        width: '100%',
+        maxWidth: '400px',
+        padding: '10px',
+        borderRadius: '4px',
+        border: '1px solid #ccc',
+        marginBottom: '20px',
+        fontSize: '16px',
+        '@media (max-width: 600px)': {
+            width: '100%',
+            marginBottom: '10px'
+        }
     }
 }
 
