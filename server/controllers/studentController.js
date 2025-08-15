@@ -34,20 +34,29 @@ export const addStudent = async (req, res) => {
 
 export const exportToExcel = async (req, res) => {
     try {
-        const students = await Student.find();
+        // Get attendance filter from query params
+        const { attendance } = req.query;
+        let students;
+        let sheetName = "Students";
+
+        if (attendance === "Absent") {
+            students = await Student.find({ attendance: "Absent" });
+            sheetName = "Absent Students";
+        } else if (attendance === "Present") {
+            students = await Student.find({ attendance: "Present" });
+            sheetName = "Present Students";
+        } else {
+            students = await Student.find();
+        }
+
         if (students.length === 0) {
             return res.status(404).json({ message: "No Students Found!" });
         }
 
-        // Separate students by attendance
-        const presentStudents = students.filter(s => s.attendance === "Present");
-        const absentStudents = students.filter(s => s.attendance === "Absent");
-
         const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet(sheetName);
 
-        // Present Sheet
-        const presentSheet = workbook.addWorksheet("Present Students");
-        presentSheet.columns = [
+        worksheet.columns = [
             { header: "Name", key: "name", width: 30 },
             { header: "Standard", key: "std", width: 10 },
             { header: "Section", key: "section", width: 10 },
@@ -55,22 +64,9 @@ export const exportToExcel = async (req, res) => {
             { header: "Attendance", key: "attendance", width: 15 },
             { header: "Fees Info", key: "feesPaid", width: 15 }
         ];
-        presentStudents.forEach(student => {
-            presentSheet.addRow({
-                name: student.name,
-                std: student.std,
-                section: student.section,
-                subStatus: student.subStatus,
-                attendance: student.attendance,
-                feesPaid: student.feesPaid
-            });
-        });
 
-        // Absent Sheet
-        const absentSheet = workbook.addWorksheet("Absent Students");
-        absentSheet.columns = presentSheet.columns;
-        absentStudents.forEach(student => {
-            absentSheet.addRow({
+        students.forEach(student => {
+            worksheet.addRow({
                 name: student.name,
                 std: student.std,
                 section: student.section,
@@ -87,7 +83,7 @@ export const exportToExcel = async (req, res) => {
         }
 
         const currentDate = new Date().toISOString().split('T')[0];
-        const filePath = path.join(__dirname, `../uploads/students-${currentDate}.xlsx`);
+        const filePath = path.join(__dirname, `../uploads/${sheetName.replace(" ", "_").toLowerCase()}-${currentDate}.xlsx`);
 
         await workbook.xlsx.writeFile(filePath);
 

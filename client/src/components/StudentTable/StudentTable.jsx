@@ -54,32 +54,20 @@ const StudentTable = () => {
         }
     }
 
-    const handleExcel = async () => {
+    const handleExcel = async (attendanceType = attendanceFilter) => {
         try {
-            // Make GET request with responseType blob
             const response = await api.get(`/data${attendanceFilter ? `?attendance=${attendanceFilter}` : ''}`,
                 { responseType: 'blob' }
             );
-
-            // Create blob link to download
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
-
-            // Get current date for filename
             const date = new Date().toISOString().split('T')[0];
-            link.setAttribute('download', `students-${date}.xlsx`);
-
-            // Append to html link element page
+            link.setAttribute('download', `students-${attendanceType || 'all'}-${date}.xlsx`);
             document.body.appendChild(link);
-
-            // Start download
             link.click();
-
-            // Clean up and remove the link
             link.parentNode.removeChild(link);
             window.URL.revokeObjectURL(url);
-
             toast.success("Excel file downloaded successfully");
         } catch (error) {
             console.error("Error downloading Excel file:", error);
@@ -191,6 +179,10 @@ const StudentTable = () => {
                     <button style={styles.excel} onClick={handleExcel}>
                         <FileSpreadsheet />
                         <span style={styles.buttonText}>Download Excel</span>
+                    </button>
+                    <button style={styles.excel} onClick={() => handleExcel("Absent")}>
+                        <FileSpreadsheet />
+                        <span style={styles.buttonText}>Download Absentees</span>
                     </button>
                     <button style={styles.newStudent} onClick={navigateToCreate}>
                         <Plus />
