@@ -32,9 +32,16 @@ export const addStudent = async (req, res) => {
     }
 }
 
-export const exportToExcel = async (_, res) => {
+export const exportToExcel = async (req, res) => {
     try {
-        const students = await Student.find();
+        // Get attendance filter from query params
+        const { attendance } = req.query;
+        let filter = {};
+        if (attendance) {
+            filter.attendance = attendance;
+        }
+
+        const students = await Student.find(filter);
         if (students.length === 0) {
             return res.status(404).json({ message: "No Students Found!" });
         }
@@ -62,14 +69,12 @@ export const exportToExcel = async (_, res) => {
             });
         });
 
-        // Create uploads directory if it doesn't exist
         const uploadsDir = path.join(__dirname, '../uploads');
         if (!fs.existsSync(uploadsDir)) {
             fs.mkdirSync(uploadsDir);
         }
 
-        // Use current date for file name
-        const currentDate = formatDate(new Date());
+        const currentDate = new Date().toISOString().split('T')[0];
         const filePath = path.join(__dirname, `../uploads/students-${currentDate}.xlsx`);
 
         await workbook.xlsx.writeFile(filePath);
@@ -79,7 +84,6 @@ export const exportToExcel = async (_, res) => {
                 console.error("Download error:", err);
                 res.status(500).json({ message: "Error downloading file" });
             } else {
-                // Delete file after successful download
                 fs.unlink(filePath, (unlinkErr) => {
                     if (unlinkErr) {
                         console.error("Error deleting file:", unlinkErr);
@@ -107,7 +111,7 @@ export const updateStudent = async (req, res) => {
     try {
         const { id } = req.params;
         const { name, std, section, subStatus, attendance, feesPaid } = req.body;
-        const student = await Student.findByIdAndUpdate(id, { name, std, section, subStatus, attendance, feesPaid }, { new: true , runValidators: true });
+        const student = await Student.findByIdAndUpdate(id, { name, std, section, subStatus, attendance, feesPaid }, { new: true, runValidators: true });
         if (!student) {
             return res.status(404).json({ message: "Student Not Found!" });
         }

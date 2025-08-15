@@ -11,8 +11,10 @@ import './StudenTable.css';
 const StudentTable = () => {
     const [students, setStudents] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [attendanceFilter, setAttendanceFilter] = useState("");
     const navigate = useNavigate();
     const filteredStudents = students.filter(student =>
+        (attendanceFilter === "" || student.attendance === attendanceFilter) &&
         student.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -55,9 +57,9 @@ const StudentTable = () => {
     const handleExcel = async () => {
         try {
             // Make GET request with responseType blob
-            const response = await api.get("/data", {
-                responseType: 'blob'
-            });
+            const response = await api.get("/data", `${attendanceFilter ? `?attendance=${attendanceFilter}` : ''}`,
+                { responseType: 'blob' }
+            );
 
             // Create blob link to download
             const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -114,6 +116,18 @@ const StudentTable = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                     style={styles.searchInput}
                 />
+            </div>
+
+            <div style={styles.filterContainer}>
+                <select
+                    value={attendanceFilter}
+                    onChange={e => setAttendanceFilter(e.target.value)}
+                    style={styles.filterSelect}
+                >
+                    <option value="">All</option>
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                </select>
             </div>
 
             <div style={styles.tcontainer}>
@@ -357,6 +371,20 @@ const styles = {
             width: '100%',
             marginBottom: '10px'
         }
+    },
+    filterContainer: {
+        width: '95%',
+        maxWidth: '1200px',
+        margin: '10px auto',
+        padding: '0 10px',
+    },
+    filterSelect: {
+        width: '200px',
+        padding: '10px',
+        fontSize: '16px',
+        borderRadius: '8px',
+        border: '1px solid #ccc',
+        marginBottom: '10px',
     },
     actionBtnGroup: {
         display: 'flex',
