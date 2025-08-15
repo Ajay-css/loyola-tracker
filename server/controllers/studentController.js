@@ -39,16 +39,15 @@ export const exportToExcel = async (req, res) => {
             return res.status(404).json({ message: "No Students Found!" });
         }
 
-        // Sort students: Present first, then Absent
-        const sortedStudents = students.sort((a, b) => {
-            if (a.attendance === b.attendance) return 0;
-            return a.attendance === "Present" ? -1 : 1;
-        });
+        // Separate students by attendance
+        const presentStudents = students.filter(s => s.attendance === "Present");
+        const absentStudents = students.filter(s => s.attendance === "Absent");
 
         const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet("Students");
 
-        worksheet.columns = [
+        // Present Sheet
+        const presentSheet = workbook.addWorksheet("Present Students");
+        presentSheet.columns = [
             { header: "Name", key: "name", width: 30 },
             { header: "Standard", key: "std", width: 10 },
             { header: "Section", key: "section", width: 10 },
@@ -56,9 +55,22 @@ export const exportToExcel = async (req, res) => {
             { header: "Attendance", key: "attendance", width: 15 },
             { header: "Fees Info", key: "feesPaid", width: 15 }
         ];
+        presentStudents.forEach(student => {
+            presentSheet.addRow({
+                name: student.name,
+                std: student.std,
+                section: student.section,
+                subStatus: student.subStatus,
+                attendance: student.attendance,
+                feesPaid: student.feesPaid
+            });
+        });
 
-        sortedStudents.forEach(student => {
-            worksheet.addRow({
+        // Absent Sheet
+        const absentSheet = workbook.addWorksheet("Absent Students");
+        absentSheet.columns = presentSheet.columns;
+        absentStudents.forEach(student => {
+            absentSheet.addRow({
                 name: student.name,
                 std: student.std,
                 section: student.section,
