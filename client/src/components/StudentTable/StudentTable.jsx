@@ -6,7 +6,7 @@ import api from '../../lib/axios.js';
 import { LogOut } from 'lucide-react';
 import axios from 'axios';
 import { Edit, Trash2 } from 'lucide-react';
-import './StudentTable.css';
+import './StudenTable.css';
 
 const StudentTable = () => {
     const [students, setStudents] = useState([]);
