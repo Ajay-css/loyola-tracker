@@ -14,7 +14,7 @@ const StudentTable = () => {
     const [attendanceFilter, setAttendanceFilter] = useState("");
     const navigate = useNavigate();
     const filteredStudents = students.filter(student =>
-        (attendanceFilter === "" || student.attendance === attendanceFilter) &&
+        (attendanceFilter === "" || student.attendance?.toLowerCase() === attendanceFilter.toLowerCase()) &&
         student.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -56,8 +56,9 @@ const StudentTable = () => {
 
     const handleExcel = async (attendanceType = attendanceFilter) => {
         try {
+            const filterValue = attendanceType ? attendanceType.toLowerCase() : '';
             const response = await api.get(
-                `/data${attendanceType ? `?attendance=${attendanceType}` : ''}`,
+                `/data${filterValue ? `?attendance=${filterValue}` : ''}`,
                 { responseType: 'blob' }
             );
             const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -114,8 +115,8 @@ const StudentTable = () => {
                     style={styles.filterSelect}
                 >
                     <option value="">All</option>
-                    <option value="Present">Present</option>
-                    <option value="Absent">Absent</option>
+                    <option value="present">Present</option>
+                    <option value="absent">Absent</option>
                 </select>
             </div>
 
