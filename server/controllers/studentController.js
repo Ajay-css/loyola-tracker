@@ -40,10 +40,14 @@ export const exportToExcel = async (req, res) => {
         let sheetName = "Students";
 
         if (attendance === "absent") {
-            students = await Student.find({ attendance: "absent" });
+            students = await Student.find({
+                attendance: { $regex: /^absent$/i }
+            });
             sheetName = "Absent Students";
         } else if (attendance === "present") {
-            students = await Student.find({ attendance: "present" });
+            students = await Student.find({
+                attendance: { $regex: /^present$/i }
+            });
             sheetName = "Present Students";
         } else {
             students = await Student.find();
