@@ -147,22 +147,24 @@ const StudentTable = () => {
                                         <td style={styles.tdata}>{student.attendance}</td>
                                         <td style={styles.tdata}>{student.feesPaid ? "Yes" : "No"}</td>
                                         <td>
-                                            <button
-                                                onClick={() => navigateToEdit(student._id)}
-                                                style={styles.editBtn}
-                                                className="action-btn edit-btn"
-                                            >
-                                                <Edit size={18} />
-                                                <span className="btn-text">Edit</span>
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(student._id)}
-                                                style={styles.delBtn}
-                                                className="action-btn del-btn"
-                                            >
-                                                <Trash2 size={18} />
-                                                <span className="btn-text">Delete</span>
-                                            </button>
+                                            <div style={styles.actionBtnGroup}>
+                                                <button
+                                                    onClick={() => navigateToEdit(student._id)}
+                                                    style={styles.editBtn}
+                                                    className="action-btn edit-btn"
+                                                >
+                                                    <Edit size={18} />
+                                                    <span className="btn-text">Edit</span>
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(student._id)}
+                                                    style={styles.delBtn}
+                                                    className="action-btn del-btn"
+                                                >
+                                                    <Trash2 size={18} />
+                                                    <span className="btn-text">Delete</span>
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))
@@ -355,6 +357,14 @@ const styles = {
             width: '100%',
             marginBottom: '10px'
         }
+    },
+    actionBtnGroup: {
+        display: 'flex',
+        flexDirection: 'row',
+        gap: '8px',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexWrap: 'nowrap',
     }
 }
 
