@@ -5,6 +5,8 @@ import { FileSpreadsheet, Plus } from 'lucide-react';
 import api from '../../lib/axios.js';
 import { LogOut } from 'lucide-react';
 import axios from 'axios';
+import { Edit, Trash2 } from 'lucide-react';
+import './StudentTable.css';
 
 const StudentTable = () => {
     const [students, setStudents] = useState([]);
@@ -132,7 +134,7 @@ const StudentTable = () => {
                             {filteredStudents.length === 0 ? (
                                 <tr>
                                     <td colSpan="7" style={{ textAlign: 'center', padding: '20px', color: '#888' }}>
-                                        No students found matching your search.
+                                        No Students Found.
                                     </td>
                                 </tr>
                             ) : (
@@ -148,14 +150,18 @@ const StudentTable = () => {
                                             <button
                                                 onClick={() => navigateToEdit(student._id)}
                                                 style={styles.editBtn}
+                                                className="action-btn edit-btn"
                                             >
-                                                Edit
+                                                <Edit size={18} />
+                                                <span className="btn-text">Edit</span>
                                             </button>
                                             <button
                                                 onClick={() => handleDelete(student._id)}
                                                 style={styles.delBtn}
+                                                className="action-btn del-btn"
                                             >
-                                                Delete
+                                                <Trash2 size={18} />
+                                                <span className="btn-text">Delete</span>
                                             </button>
                                         </td>
                                     </tr>
@@ -283,6 +289,9 @@ const styles = {
         borderRadius: '4px',
         cursor: 'pointer',
         marginRight: '5px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
         '@media (max-width: 768px)': {
             padding: '6px 10px',
             fontSize: '12px'
@@ -295,6 +304,9 @@ const styles = {
         border: 'none',
         borderRadius: '4px',
         cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
         '@media (max-width: 768px)': {
             padding: '6px 10px',
             fontSize: '12px'
@@ -331,7 +343,7 @@ const styles = {
             alignItems: 'flex-start',
         }
     },
-    searchInput : {
+    searchInput: {
         width: '100%',
         maxWidth: '400px',
         padding: '10px',

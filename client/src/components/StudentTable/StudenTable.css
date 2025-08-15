@@ -1,0 +1,10 @@
+@media (max-width: 600px) {
+  .btn-text {
+    display: none !important;
+  }
+}
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
