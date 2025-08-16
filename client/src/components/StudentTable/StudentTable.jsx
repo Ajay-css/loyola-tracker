@@ -378,6 +378,10 @@ const styles = {
         fontSize: '16px',
         '@media (max-width: 600px)': {
             width: '100%',
+            display: 'flex',
+            justifyContent : 'center',
+            alignItems: 'center',
+            marginLeft: '0',
             marginBottom: '10px'
         }
     },
