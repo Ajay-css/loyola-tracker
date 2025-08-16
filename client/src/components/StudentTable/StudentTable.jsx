@@ -94,18 +94,19 @@ const StudentTable = () => {
         <>
 
             <div style={styles.nav}>
-                <h1 style={{ textAlign: 'center', margin: '20px 0' }}>Students List</h1>
+                <div style={styles.titleSearchRow}>
+                    <h1 style={styles.title}>Students List</h1>
+                    <div style={styles.searchContainer}>
+                        <input
+                            type="text"
+                            placeholder="Search by student name..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            style={styles.searchInput}
+                        />
+                    </div>
+                </div>
                 <button style={styles.logout} onClick={handleLogout}><LogOut size={20} />Logout</button>
-            </div>
-
-            <div style={styles.searchContainer}>
-                <input
-                    type="text"
-                    placeholder="Search by student name..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    style={styles.searchInput}
-                />
             </div>
 
             <div style={styles.filterContainer}>
@@ -355,6 +356,35 @@ const styles = {
         '@media (max-width: 600px)': {
             flexDirection: 'column',
             alignItems: 'flex-start',
+        }
+    },
+    titleSearchRow: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+        maxWidth: '1200px',
+        margin: '0 auto',
+        flexWrap: 'wrap',
+    },
+    title: {
+        margin: '0',
+        fontSize: '24px',
+        color: '#333',
+        '@media (max-width: 768px)': {
+            fontSize: '20px',
+        }
+    },
+    searchContainer: {
+        flex: '1',
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        marginLeft: '20px',
+        '@media (max-width: 600px)': {
+            width: '100%',
+            marginLeft: '0',
+            marginTop: '10px',
         }
     },
     searchInput: {
