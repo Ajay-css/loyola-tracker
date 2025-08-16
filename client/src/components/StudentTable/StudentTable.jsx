@@ -94,7 +94,7 @@ const StudentTable = () => {
         <>
 
             <div style={styles.nav}>
-                <h1 style={{ textAlign: 'center', margin: '20px 0' }}>Students List</h1>
+                <h1 style={styles.headingTitle}>Students List</h1>
                 <button style={styles.logout} onClick={handleLogout}><LogOut size={20} />Logout</button>
             </div>
 
@@ -201,6 +201,16 @@ const StudentTable = () => {
 }
 
 const styles = {
+    headingTitle: {
+        fontSize: '24px',
+        fontWeight: 'bold',
+        margin: '20px 5px',
+        color: '#333',
+        '@media (max-width: 600px)': {
+            fontSize: '20px',
+            margin: '15px 0',
+        }
+    },
     tableWrapper: {
         overflowX: 'auto',
         width: '100%',
@@ -364,6 +374,7 @@ const styles = {
         borderRadius: '4px',
         border: '1px solid #ccc',
         marginBottom: '20px',
+        marginLeft: '20px',
         fontSize: '16px',
         '@media (max-width: 600px)': {
             width: '100%',
