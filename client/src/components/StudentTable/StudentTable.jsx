@@ -204,8 +204,8 @@ const styles = {
     headingTitle: {
         fontSize: '24px',
         fontWeight: 'bold',
-        margin: '20px 5px',
-        color: '#333',
+        margin: '20px 20px',
+        color: '#ffffffff',
         '@media (max-width: 600px)': {
             fontSize: '20px',
             margin: '15px 0',
@@ -374,7 +374,7 @@ const styles = {
         borderRadius: '4px',
         border: '1px solid #ccc',
         marginBottom: '20px',
-        marginLeft: '20px',
+        marginLeft: '50px',
         fontSize: '16px',
         '@media (max-width: 600px)': {
             width: '100%',
