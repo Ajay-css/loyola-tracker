@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
-    email: { type: String, required: true, unique: true },
-    fullName: { type: String, required: true, },
-    password: { type: String, required: true, minlength: 6 },
-}, { timestamps: true } // Created and Updated at Date wiil be displayed
-)
+const userSchema = new mongoose.Schema(
+    {
+        email: { type: String, required: true, unique: true, index: true },
+        fullName: { type: String, required: true },
+        password: { type: String, required: true, minlength: 6 },
+    },
+    { timestamps: true } // adds createdAt & updatedAt
+);
 
 const User = mongoose.model("User", userSchema);
 
