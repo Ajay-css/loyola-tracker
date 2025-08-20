@@ -13,6 +13,7 @@ const StudentTable = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [attendanceFilter, setAttendanceFilter] = useState("");
     const navigate = useNavigate();
+
     const filteredStudents = students.filter(student =>
         (attendanceFilter === "" || student.attendance?.toLowerCase() === attendanceFilter.toLowerCase()) &&
         student.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -54,6 +55,19 @@ const StudentTable = () => {
         }
     }
 
+    // Toggle attendance
+    const handleToggleAttendance = async (id, currentAttendance) => {
+        try {
+            const newStatus = currentAttendance === "present" ? "absent" : "present";
+            await api.put(`/update/${id}`, { attendance: newStatus });
+            toast.success(`Marked as ${newStatus}`);
+            fetchStudents(); // refresh list
+        } catch (error) {
+            console.error("Error updating attendance:", error);
+            toast.error("Failed to update attendance");
+        }
+    };
+
     const handleExcel = async (attendanceType = attendanceFilter) => {
         try {
             const filterValue = attendanceType ? attendanceType.toLowerCase() : '';
@@ -78,7 +92,6 @@ const StudentTable = () => {
     }
 
     // Logout function
-
     const handleLogout = async () => {
         try {
             await axios.post('https://loyola-tracker-backend.onrender.com/api/auth/logout');
@@ -92,7 +105,6 @@ const StudentTable = () => {
 
     return (
         <>
-
             <div style={styles.nav}>
                 <h1 style={styles.headingTitle}>Students List</h1>
                 <button style={styles.logout} onClick={handleLogout}><LogOut size={20} />Logout</button>
@@ -148,7 +160,22 @@ const StudentTable = () => {
                                         <td style={styles.tdata}>{student.std}</td>
                                         <td style={styles.tdata}>{student.section}</td>
                                         <td style={styles.tdata}>{student.subStatus}</td>
-                                        <td style={styles.tdata}>{student.attendance}</td>
+                                        {/* Attendance Toggle Button */}
+                                        <td style={styles.tdata}>
+                                            <button
+                                                onClick={() => handleToggleAttendance(student._id, student.attendance)}
+                                                style={{
+                                                    padding: "6px 12px",
+                                                    border: "none",
+                                                    borderRadius: "4px",
+                                                    cursor: "pointer",
+                                                    backgroundColor: student.attendance === "present" ? "#4CAF50" : "#f44336",
+                                                    color: "white"
+                                                }}
+                                            >
+                                                {student.attendance === "present" ? "Present" : "Absent"}
+                                            </button>
+                                        </td>
                                         <td style={styles.tdata}>{student.feesPaid ? "Yes" : "No"}</td>
                                         <td>
                                             <div style={styles.actionBtnGroup}>
@@ -227,7 +254,7 @@ const styles = {
         borderCollapse: 'collapse',
         textAlign: 'center',
         padding: '10px',
-        minWidth: '650px', // Ensures table doesn't get too squished
+        minWidth: '650px',
     },
     tcontainer: {
         marginTop: '20px',

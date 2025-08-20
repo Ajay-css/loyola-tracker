@@ -93,13 +93,6 @@ const EditStudent = () => {
                         onChange={(e) => setSubStatus(e.target.value)}
                         style={styles.input}
                     />
-                    <input
-                        type="text"
-                        placeholder="Attendance"
-                        value={attendance}
-                        onChange={(e) => setAttendance(e.target.value)}
-                        style={styles.input}
-                    />
                     <div style={styles.checkboxContainer}>
                         <label style={styles.checkbox}>
                             <input
