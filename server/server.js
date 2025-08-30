@@ -41,10 +41,11 @@ app.use('/api/details', studentRouter)
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
     cors: {
-        origin: "https://loyola-tracker.onrender.com" // frontend URL changed to production
+        origin: "https://loyola-tracker.onrender.com", // frontend URL changed to production
+        credentials : true
     }
 });
-
+credentials: true
 io.on("connection", (socket) => {
     console.log("Client Socket Connected");
     initSocket(io, socket);
